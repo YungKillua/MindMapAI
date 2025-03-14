@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+.node {
+  cursor: pointer;
+}
+
+.map-bg:active {
+  cursor: grabbing;
+}

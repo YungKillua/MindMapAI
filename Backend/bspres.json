@@ -1,0 +1,30 @@
+{
+  "id": "root",
+  "text": "Hauptthema",
+  "children": [
+    {
+      "id": "node1",
+      "text": "Unterthema 1",
+      "children": [
+        {
+          "id": "node1-1",
+          "text": "Detail 1"
+        },
+        {
+          "id": "node1-2",
+          "text": "Detail 2",
+          "children": [
+            {
+              "id": "node1-2-1",
+              "text": "Detail 2-1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "node2",
+      "text": "Unterthema 2"
+    }
+  ]
+}
