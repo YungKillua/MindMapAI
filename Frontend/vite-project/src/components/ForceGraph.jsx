@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useEffect, useRef, useState, useContext } from "react";
 import * as d3 from "d3";
 import { MindmapContext } from "/src/components/Context";
@@ -7,20 +6,10 @@ const ForceGraph = ({ nodes, links }) => {
   //Global States
   const {selectedNode, setSelectedNode} = useContext(MindmapContext);
   //Local States
-=======
-import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-
-const ForceGraph = ({ nodes, links }) => {
->>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
   const gRef = useRef(null);
   const [forceStrength, setForceStrength] = useState(-300);
-<<<<<<< HEAD
-=======
-  const [selectedNode, setSelectedNode] = useState(null);
->>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
 
   const isDarkMode = document.documentElement.classList.contains("dark");
 
