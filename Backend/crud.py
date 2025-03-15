@@ -19,3 +19,13 @@ def delete_mindmap(db: Session, mindmap_id: int):
     if mindmap:
         db.delete(mindmap)
         db.commit()
+        
+def update_mindmap_data(db: Session, mindmap_id: int, new_data: dict):
+    mindmap = db.query(MindMap).filter(MindMap.id == mindmap_id).first()
+    
+    if mindmap:
+        mindmap.data = new_data
+        db.commit()
+        db.refresh(mindmap)
+    
+    return mindmap

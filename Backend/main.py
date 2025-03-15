@@ -4,7 +4,7 @@ import uvicorn
 from sqlalchemy.orm import Session
 import json
 from models import MindMap
-from schemas import MindMapCreate
+from schemas import MindMapCreate, MindMapDataUpdate
 from database import SessionLocal, engine
 from utils import generate_mindmap
 import crud
@@ -66,6 +66,26 @@ def save_mindmap(mindmap: MindMapCreate, token: str = Depends(oauth2_scheme), db
     
     mindmap = crud.create_mindmap(db, mindmap.title, mindmap.data, user_id)
     return mindmap
+
+# Nur Data patchen
+@app.patch("/mindmaps/{mindmap_id}/data")
+def update_mindmap_data(mindmap_id: int, update: MindMapDataUpdate, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    user_id = verify_token(token)
+    
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    
+    mindmap = crud.get_mindmap_by_id(db, mindmap_id)
+    
+    if not mindmap:
+        raise HTTPException(status_code=404, detail="Mindmap not found")
+    
+    if mindmap.owner_id != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this mindmap")
+    
+    updated_mindmap = crud.update_mindmap_data(db, mindmap_id, update.data)
+    return updated_mindmap
+
 
 # Endpunkt: Loeschen einer Mindmap
 @app.delete("/mindmaps/{mindmap_id}")

@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import * as d3 from "d3";
+import { MindmapContext } from "/src/components/Context";
 
 const ForceGraph = ({ nodes, links }) => {
+  //Global States
+  const {selectedNode, setSelectedNode} = useContext(MindmapContext);
+  //Local States
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
   const gRef = useRef(null);
   const [forceStrength, setForceStrength] = useState(-300);
-  const [selectedNode, setSelectedNode] = useState(null);
 
   const isDarkMode = document.documentElement.classList.contains("dark");
 
