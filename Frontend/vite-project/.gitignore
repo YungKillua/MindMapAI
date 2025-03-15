@@ -22,7 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+<<<<<<< HEAD
 
 # Anderes
 pastesheet
 Backend/.env
+=======
+>>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe

@@ -1,10 +1,17 @@
 import openai
 import json
+<<<<<<< HEAD
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 openai_key = os.getenv("OPENAI_API_KEY")
+=======
+
+with open('config.json', 'r') as config:
+    config = json.load(config)
+    openai_key = config['keys']['openai']
+>>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
     
 gpt_client = openai.Client(api_key=openai_key)
   

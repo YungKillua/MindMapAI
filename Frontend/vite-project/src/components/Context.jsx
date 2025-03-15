@@ -9,7 +9,10 @@ export const MindmapProvider = ({ children }) => {
   const [mindmaps, setMindmaps] = useState([]); // Liste der Mindmaps
   const [currentmap, setCurrentMap] = useState([]);
   const [isLoggedIn, setisLoggedIn] = useState(false);
+<<<<<<< HEAD
   const [selectedNode, setSelectedNode] = useState(null);
+=======
+>>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
 
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
@@ -46,6 +49,7 @@ export const MindmapProvider = ({ children }) => {
     }, [darkMode]);
 
   return (
+<<<<<<< HEAD
     <MindmapContext.Provider value={{ isLoggedIn, setisLoggedIn,
                                       currentmap, setCurrentMap,
                                       mindmaps, setMindmaps,
@@ -53,6 +57,9 @@ export const MindmapProvider = ({ children }) => {
                                       darkMode, setDarkMode,
                                       selectedNode, setSelectedNode,
                                       }}>
+=======
+    <MindmapContext.Provider value={{ isLoggedIn, setisLoggedIn, currentmap, setCurrentMap, mindmaps, setMindmaps, selectedMindmap, setSelectedMindmap, darkMode, setDarkMode }}>
+>>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
       {children}
     </MindmapContext.Provider>
   );
