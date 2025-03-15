@@ -4,11 +4,7 @@ import uvicorn
 from sqlalchemy.orm import Session
 import json
 from models import MindMap
-<<<<<<< HEAD
 from schemas import MindMapCreate, MindMapDataUpdate
-=======
-from schemas import MindMapCreate
->>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
 from database import SessionLocal, engine
 from utils import generate_mindmap
 import crud
@@ -71,7 +67,6 @@ def save_mindmap(mindmap: MindMapCreate, token: str = Depends(oauth2_scheme), db
     mindmap = crud.create_mindmap(db, mindmap.title, mindmap.data, user_id)
     return mindmap
 
-<<<<<<< HEAD
 # Nur Data patchen
 @app.patch("/mindmaps/{mindmap_id}/data")
 def update_mindmap_data(mindmap_id: int, update: MindMapDataUpdate, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
@@ -92,8 +87,6 @@ def update_mindmap_data(mindmap_id: int, update: MindMapDataUpdate, token: str =
     return updated_mindmap
 
 
-=======
->>>>>>> 67c7627d4618095c715b3c11bb060156e0a5fefe
 # Endpunkt: Loeschen einer Mindmap
 @app.delete("/mindmaps/{mindmap_id}")
 def delete_mindmap(
