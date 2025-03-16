@@ -8,6 +8,7 @@ import { generateNewNodeId } from './utils/generate_node_id';
 import { convertMindmapToGraph } from './utils/convertMindmap';
 import { addNodeToCurrentMap } from './utils/addNodeToCurrentMap';
 import axios from 'axios';
+import ForceGraphTest from './components/ForceGraphTest';
 
 
 const App = () => {
@@ -135,7 +136,7 @@ const App = () => {
         {/* 🔹 GRAPH-BEREICH */}
         <div className="flex flex-1 h-screen bg-white dark:bg-neutral-900 overflow-hidden relative">
           <ToolBar addNode={addNode} />
-          {selectedMindmap && isLoggedIn && <ForceGraph nodes={graphData.nodes} links={graphData.links} />}
+          {selectedMindmap && isLoggedIn && <ForceGraphTest nodes={graphData.nodes} links={graphData.links} />}
         </div>
       </div>
     </div>

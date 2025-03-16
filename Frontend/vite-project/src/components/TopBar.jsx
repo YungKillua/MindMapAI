@@ -14,7 +14,7 @@ const TopBar = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const userCredentials = { username, password };
-  const { isLoggedIn, setisLoggedIn, setSelectedMindmap, setCurrentMap, setMindmaps, darkMode } = useContext(MindmapContext);
+  const { isLoggedIn, setisLoggedIn, setSelectedMindmap, setCurrentMap, setMindmaps, darkMode, setDarkMode, animationEnabled, setAnimationEnabled} = useContext(MindmapContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [menuState, setMenuState] = useState("default"); // Zustand für das Menü (default oder settings)
@@ -25,6 +25,9 @@ const TopBar = () => {
   const [openbar, setOpenBar] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState('success'); // 'success' oder 'error'
+
+  const animation = animationEnabled ? "on" : "off";
+  const darkmode = darkMode ? "on" : "off";
 
   const Theme = createTheme({
     palette: {
@@ -44,6 +47,14 @@ const TopBar = () => {
   const handleSettingsClick = () => {
     setMenuState("settings"); // Setzt das Menü auf den Settings-Modus
   };
+
+  const handleAnimationClick = () => {
+    setAnimationEnabled((prev) => !prev);
+  };
+
+  const handleDarkmodeClick = () => {
+    setDarkMode((prev) => !prev);
+  }
 
   const handleLogin = async (userCredentials) => {
     try {
@@ -142,8 +153,8 @@ const TopBar = () => {
                   // Hier werden die Settings-Optionen angezeigt, wenn `menuState` auf "settings" gesetzt ist
                   <>
                     <MenuItem onClick={handleClose}>Change Primary Color</MenuItem>
-                    <MenuItem onClick={handleClose}>Animations</MenuItem>
-                    <MenuItem onClick={handleClose}>DarkMode</MenuItem>
+                    <MenuItem onClick={handleAnimationClick}>Animations: {animation}</MenuItem>
+                    <MenuItem onClick={handleDarkmodeClick}>DarkMode: {darkmode}</MenuItem>
                     <MenuItem onClick={() => setMenuState('default')}>Back</MenuItem>
                   </>
                 )}
