@@ -6,23 +6,22 @@ import MenuItem from "@mui/material/MenuItem";
 import { MindmapContext } from "/src/components/Context";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SignUpModal from "/src/components/SignUpModal";
-import { Snackbar, Alert, CssBaseline} from "@mui/material";
+import { Snackbar, Alert } from "@mui/material";
 import DarkModeToggle from "/src/components/DarkModeToggle";
-
 
 const TopBar = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const userCredentials = { username, password };
-  const {isLoggedIn, setisLoggedIn, setSelectedMindmap, setCurrentMap, setMindmaps, darkMode} = useContext(MindmapContext);
+  const { isLoggedIn, setisLoggedIn, setSelectedMindmap, setCurrentMap, setMindmaps, darkMode } = useContext(MindmapContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const [menuState, setMenuState] = useState("default"); // Zustand für das Menü (default oder settings)
   const open = Boolean(anchorEl);
   const [opensignup, setOpenSignup] = useState(false);
 
-  //snackbaralerts
+  // Snackbar Alerts
   const [openbar, setOpenBar] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [alertSeverity, setAlertSeverity] = useState('success'); // 'success' oder 'error'
@@ -35,28 +34,33 @@ const TopBar = () => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+    setMenuState('default');
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
+  const handleSettingsClick = () => {
+    setMenuState("settings"); // Setzt das Menü auf den Settings-Modus
+  };
+
   const handleLogin = async (userCredentials) => {
-      try {
-        const res = await axios.post(backendUrl + '/auth/login/', userCredentials);
-        // User-Daten aus der API-Antwort
-        setisLoggedIn(true); // React State setzen
-        localStorage.setItem("token", res.data.access_token); // User-Daten im LocalStorage speichern
-        console.log('Erfolgreich angemeldet' + res.data);
-        setAlertMessage('Login successfull');
-        setAlertSeverity('success');
-        setOpenBar(true);
-      } catch (error) {
-        console.error("Login fehlgeschlagen", error);
-        setAlertMessage('Login failed');
-        setAlertSeverity('error');
-        setOpenBar(true);
-      }
-    };
+    try {
+      const res = await axios.post(backendUrl + '/auth/login/', userCredentials);
+      // User-Daten aus der API-Antwort
+      setisLoggedIn(true); // React State setzen
+      localStorage.setItem("token", res.data.access_token); // User-Daten im LocalStorage speichern
+      setAlertMessage('Login successful');
+      setAlertSeverity('success');
+      setOpenBar(true);
+    } catch (error) {
+      console.error("Login fehlgeschlagen", error);
+      setAlertMessage('Login failed');
+      setAlertSeverity('error');
+      setOpenBar(true);
+    }
+  };
 
   const handleLogout = () => {
     setisLoggedIn(false);
@@ -68,13 +72,12 @@ const TopBar = () => {
     handleClose();
   };
 
-
   return (
     <div className="bg-amber-100 dark:bg-neutral-700 text-white p-2 flex justify-between items-center min-w-[100vw]">
-
       {/* Logo auf der linken Seite */}
-      <div className="text-2xl font-bold pl-1 text-neutral-950 dark:text-white">BrainMap</div>
-      <DarkModeToggle/>
+      <div className="text-2xl font-bold pl-1 text-blue-500">BrainMap</div>
+      <DarkModeToggle />
+      
       {/* Login / Account-Icons */}
       <div className="flex items-center gap-2 h-10">
         {!isLoggedIn ? ( //Nicht eingeloggt
@@ -96,7 +99,7 @@ const TopBar = () => {
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-          
+
             {/* Login-Button */}
             <button
               className="bg-blue-900 hover:bg-blue-950 text-white py-1 px-4 rounded"
@@ -113,7 +116,7 @@ const TopBar = () => {
             </button>
             <SignUpModal open={opensignup} onClose={() => setOpenSignup(false)} 
                          setOpenBar={setOpenBar} setAlertMessage={setAlertMessage} setAlertSeverity={setAlertSeverity}
-              />
+            />
           </>
         ) : ( //Eingeloggt 
           <>
@@ -124,25 +127,37 @@ const TopBar = () => {
             </button>
             <ThemeProvider theme={Theme}>
               <Menu
-               
-               id="basic-menu"
-               anchorEl={anchorEl}
-               open={open}
-               onClose={handleClose}
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
               >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>Settings</MenuItem>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-             </Menu>
-             </ThemeProvider>
+                {menuState === "default" ? (
+                  <>
+                    <MenuItem onClick={handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </>
+                ) : (
+                  // Hier werden die Settings-Optionen angezeigt, wenn `menuState` auf "settings" gesetzt ist
+                  <>
+                    <MenuItem onClick={handleClose}>Change Primary Color</MenuItem>
+                    <MenuItem onClick={handleClose}>Animations</MenuItem>
+                    <MenuItem onClick={handleClose}>DarkMode</MenuItem>
+                    <MenuItem onClick={() => setMenuState('default')}>Back</MenuItem>
+                  </>
+                )}
+              </Menu>
+            </ThemeProvider>
           </>
         )}
       </div>
-        <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={openbar} autoHideDuration={6000} onClose={() => setOpenBar(false)}>
-          <Alert onClose={() => setOpenBar(false)} severity={alertSeverity} sx={{ width: '100%' }}>
-            {alertMessage}
-          </Alert>
-        </Snackbar>
+
+      <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} open={openbar} autoHideDuration={6000} onClose={() => setOpenBar(false)}>
+        <Alert onClose={() => setOpenBar(false)} severity={alertSeverity} sx={{ width: '100%' }}>
+          {alertMessage}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };

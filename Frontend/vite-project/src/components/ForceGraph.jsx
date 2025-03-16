@@ -4,7 +4,7 @@ import { MindmapContext } from "/src/components/Context";
 
 const ForceGraph = ({ nodes, links }) => {
   //Global States
-  const {selectedNode, setSelectedNode} = useContext(MindmapContext);
+  const {selectedNode, setSelectedNode, animationEnabled} = useContext(MindmapContext);
   //Local States
   const svgRef = useRef(null);
   const simulationRef = useRef(null);
@@ -60,20 +60,29 @@ const ForceGraph = ({ nodes, links }) => {
         .forceSimulation()
         .force("link", d3.forceLink().id((d) => d.id).distance(150))
         .force("charge", d3.forceManyBody().strength(forceStrength))
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        .force("center", d3.forceCenter(width / 4, height / 3));
     }
 
     const simulation = simulationRef.current;
+
+    let currentNodes = [];
+    let currentLinks = [];
 
     // Links updaten
     const link = g.selectAll(".link")
       .data(links)
       .join("line")
       .attr("class", "link")
-      .attr("stroke", linkColor);
-
+      .attr("stroke", linkColor)
+      .style("opacity", 0); // Unsichtbar zu Beginn
+      
     //Links unten 
     link.lower();
+
+    //Links Transition
+    link.transition()
+    .duration(1000)
+    .style("opacity", 1);
 
     // Nodes updaten
     const node = g.selectAll(".node")
@@ -82,6 +91,7 @@ const ForceGraph = ({ nodes, links }) => {
       .attr("class", "node")
       .attr("r", 8)
       .attr("fill", (d) => (d.id === selectedNode ? selectednodeColor : nodeColor))
+      .style("opacity", 0) // Unsichtbar starten
       .on("click", (event, d) => {
         setSelectedNode(d.id);
       })
@@ -104,6 +114,17 @@ const ForceGraph = ({ nodes, links }) => {
           })
       );
 
+      // Animierte Einführung der Nodes mit Verzögerung
+    node.each((d, i) => {
+      setTimeout(() => {
+        d3.select(node.nodes()[i])
+          .transition()
+          .duration(1000)
+          .ease(d3.easeBackOut)
+          .style("opacity", 1);
+      }, i * 100);
+    });
+   
     // Labels updaten
     const labels = g.selectAll(".label")
       .data(nodes)
@@ -136,7 +157,7 @@ const ForceGraph = ({ nodes, links }) => {
     return () => {
       // Entferne keine Elemente aus dem SVG, um das Springen zu vermeiden
     };
-  }, [nodes, links]);
+  }, [nodes, links, animationEnabled]);
 
   useEffect(() => {
     d3.selectAll(".node")

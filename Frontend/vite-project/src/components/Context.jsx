@@ -10,6 +10,7 @@ export const MindmapProvider = ({ children }) => {
   const [currentmap, setCurrentMap] = useState([]);
   const [isLoggedIn, setisLoggedIn] = useState(false);
   const [selectedNode, setSelectedNode] = useState(null);
+  const [animationEnabled, setAnimationEnabled] = useState(true);
 
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark"
@@ -52,6 +53,7 @@ export const MindmapProvider = ({ children }) => {
                                       selectedMindmap, setSelectedMindmap, 
                                       darkMode, setDarkMode,
                                       selectedNode, setSelectedNode,
+                                      animationEnabled, setAnimationEnabled,
                                       }}>
       {children}
     </MindmapContext.Provider>
