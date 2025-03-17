@@ -114,19 +114,19 @@ const Explorer = () => {
   };
 
   return (
-    <div className="flex flex-col min-w-[250px] h-full overflow-hidden bg-neutral-800 p-1 text-amber-50">
+    <div className="flex flex-col min-w-[250px] h-full overflow-hidden bg-neutral-200 dark:bg-neutral-800 p-1 text-gray-900 dark:text-amber-50">
       <ul>
         {mindmaps.map((mindmap) => (
           <li 
           key={mindmap.id}
-          className={`flex items-center justify-between p-1 rounded mb-1 bg-neutral-700 cursor-pointer hover:bg-neutral-600 
-            ${selectedMindmap === mindmap.id ? "border-2 border-blue-500 bg-gray-800" : "bg-gray-800"}`}
+          className={`flex items-center justify-between p-1 rounded mb-1 bg-neutral-300 dark:bg-neutral-700 cursor-pointer hover:bg-neutral-400 dark:hover:bg-neutral-600 
+            ${selectedMindmap === mindmap.id ? "border-2 border-blue-500 bg-gray-200 dark:bg-gray-800" : "bg-gray-200 dark:bg-gray-800"}`}
           onClick={() => handleSelect(mindmap.id)}
         >
           <span>{mindmap.title} ({mindmap.id})</span>
           <Trash 
             size={16} 
-            className="text-gray-400 hover:text-red-600 opacity-30 hover:opacity-100 transition-opacity cursor-pointer"
+            className="text-gray-600 dark:text-gray-400 hover:text-red-600 opacity-30 hover:opacity-100 transition-opacity cursor-pointer"
             onClick={(e) => {
               e.stopPropagation(); // Verhindert, dass der `onClick` des `li` ausgelöst wird
               setMindmapToDelete(mindmap.id);
@@ -138,13 +138,13 @@ const Explorer = () => {
       </ul>
       {isLoggedIn && isAdding ? (
           // Eingabefeld wird angezeigt, wenn isAdding true ist
-          <li className="flex items-center p-1 bg-neutral-700 rounded">
+          <li className="flex items-center p-1 bg-neutral-300 dark:bg-neutral-700 rounded">
             <input
               type="text"
               placeholder="Mindmap Name..."
               value={newMindmapTitle}
               onChange={(e) => setNewMindmapTitle(e.target.value)}
-              className="flex-1 p-1 bg-neutral-600 text-white rounded"
+              className="flex-1 p-1 bg-neutral-400 dark:bg-neutral-600 text-gray-900 dark:text-white rounded"
             />
             <button onClick={addMindmap} className="ml-1.5 text-green-400 hover:text-green-600 cursor-pointer">
               <Check size={20} />
@@ -156,7 +156,7 @@ const Explorer = () => {
         ) : (
           // Plus-Button wird angezeigt, wenn isAdding false ist
           
-        <button className="p-0.5 rounded mb-1 flex items-center justify-center cursor-pointer bg-neutral-700 hover:bg-neutral-600"
+        <button className="p-0.5 rounded mb-1 flex items-center justify-center cursor-pointer bg-neutral-300 dark:bg-neutral-700 hover:bg-neutral-400 dark:hover:bg-neutral-600"
         onClick={handleAddingClick}>
           <CirclePlus/>
         </button>

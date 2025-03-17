@@ -13,10 +13,11 @@ const ForceGraphTest = ({ nodes, links }) => {
 
   const isDarkMode = document.documentElement.classList.contains("dark");
 
-  const linkColor = isDarkMode ? "#888" : "#ccc";  // Links heller im Dark Mode
-  const nodeColor = isDarkMode ? "#333" : "#f0f0f0";  // Nodes dunkler im Dark Mode
-  const textColor = isDarkMode ? "#FFFFFF" : "#FFFFFF";  // Weißer Text in Dark Mode
-  const selectednodeColor = isDarkMode ? "#f0f0f0" : "#333";  // Helles Highlight im Dark Mode
+  const linkColor = isDarkMode ? "#888" : "#BBB";  // Etwas dunkler als der Hintergrund
+  const nodeColor = isDarkMode ? "#333" : "#666";  // Mittleres Grau
+  const textColor = isDarkMode ? "#FFFFFF" : "#222";  // Dunkler Text für bessere Lesbarkeit
+  const selectednodeColor = isDarkMode ? "#f0f0f0" : "#444";  // Kontrastreiche Auswahl
+
 
   useEffect(() => {
     console.log("🔄 Neuer Graph geladen!", nodes);
@@ -160,7 +161,8 @@ const ForceGraphTest = ({ nodes, links }) => {
                 ? enter.transition().duration(3000).style("opacity", 1) 
                 : enter.style("opacity", 1)
               ),
-          update => update.text(d => d.label),
+          update => update.text(d => d.label)
+                          .style("fill", textColor), // Aktualisiert die Textfarbe,
           exit => exit.remove()
         );
 

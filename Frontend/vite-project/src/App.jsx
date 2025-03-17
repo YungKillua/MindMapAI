@@ -134,7 +134,7 @@ const App = () => {
         <Explorer />
 
         {/* 🔹 GRAPH-BEREICH */}
-        <div className="flex flex-1 h-screen bg-white dark:bg-neutral-900 overflow-hidden relative">
+        <div className="flex flex-1 h-screen bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative">
           <ToolBar addNode={addNode} />
           {selectedMindmap && isLoggedIn && <ForceGraphTest nodes={graphData.nodes} links={graphData.links} />}
         </div>

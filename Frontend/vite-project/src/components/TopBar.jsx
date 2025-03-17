@@ -84,7 +84,7 @@ const TopBar = () => {
   };
 
   return (
-    <div className="bg-amber-100 dark:bg-neutral-700 text-white p-2 flex justify-between items-center min-w-[100vw]">
+    <div className="bg-neutral-300 dark:bg-neutral-700 text-white p-2 flex justify-between items-center min-w-[100vw]">
       {/* Logo auf der linken Seite */}
       <div className="text-2xl font-bold pl-1 text-blue-500">BrainMap</div>
       <DarkModeToggle />
@@ -131,7 +131,7 @@ const TopBar = () => {
           </>
         ) : ( //Eingeloggt 
           <>
-            <button className="bg-neutral-800 hover:bg-neutral-900 text-white w-10 h-10 flex items-center justify-center rounded-full hover:outline-none hover:ring-2 hover:ring-amber-50 hover:cursor-pointer"
+            <button className="bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900 text-white w-10 h-10 flex items-center justify-center rounded-full hover:outline-none hover:ring-2 hover:ring-black dark:hover:ring-amber-50 hover:cursor-pointer"
                     onClick={handleClick}
             >
               <User size={20} />

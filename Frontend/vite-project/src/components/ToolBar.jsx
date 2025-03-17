@@ -16,7 +16,7 @@ export default function TooolBar({addNode}) {
   }
 
     return(
-        <div className="absolute top-1 left-1  z-10 bg-neutral-800 text-white p-1 rounded flex space-x-2">
+        <div className="absolute top-1 left-1  z-10 bg-neutral-200 dark:bg-neutral-800 text-white p-1 rounded flex space-x-2">
           <button className='rounded transition-all hover:bg-neutral-200 dark:hover:bg-neutral-700 active:bg-neutral-300 dark:active:bg-neutral-600 hover:cursor-pointer'
                   onClick={handleAddNode}
                   disabled={!selectedNode}
