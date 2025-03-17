@@ -19,8 +19,8 @@ const ForceGraphTest = ({ nodes, links }) => {
   const selectednodeColor = isDarkMode ? "#f0f0f0" : "#333";  // Helles Highlight im Dark Mode
 
   useEffect(() => {
-    console.log("Nodes prop:", nodes);
-    console.log("Links prop:", links);
+    console.log("🔄 Neuer Graph geladen!", nodes);
+    console.log("Aktuelle Root:", nodes.find(n => n.id === "root"));
     // Setze sel node auf null bei map wechsel
     setSelectedNode(null);
     // Setze die Simulation nur, wenn Nodes und Links vorhanden sind
@@ -101,11 +101,7 @@ const ForceGraphTest = ({ nodes, links }) => {
         .join(
           enter => enter.append("line")
             .attr("class", "link")
-            .attr("stroke", linkColor)
-            .style("opacity", 0)
-            .transition()
-            .duration(500)
-            .style("opacity", 1),
+            .attr("stroke", linkColor),
           update => update,
           exit => exit.remove()
         );
@@ -121,9 +117,6 @@ const ForceGraphTest = ({ nodes, links }) => {
             .attr("class", "node")
             .attr("r", 8)
             .attr("fill", d => (d.id === selectedNode ? selectednodeColor : nodeColor))
-            .style("opacity", 0)
-            .transition()
-            .duration(500)
             .style("opacity", 1)
             .selection()
             .on("click", (event, d) => {
@@ -163,10 +156,11 @@ const ForceGraphTest = ({ nodes, links }) => {
             .attr("font-size", "10px")
             .text(d => d.label)
             .style("opacity", 0)
-            .transition()
-            .duration(500)
-            .style("opacity", 1),
-          update => update,
+            .call(enter => animationEnabled 
+                ? enter.transition().duration(3000).style("opacity", 1) 
+                : enter.style("opacity", 1)
+              ),
+          update => update.text(d => d.label),
           exit => exit.remove()
         );
 
