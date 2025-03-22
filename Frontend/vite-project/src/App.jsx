@@ -102,6 +102,64 @@ const App = () => {
     updateMindmapData(selectedMindmap, updatedMap, token);
   }
 
+  function deleteNode() {
+    if (!selectedNode) {
+      console.warn("Keine Node ausgewählt zum Löschen.");
+      return;
+    }
+  
+    const nodes = graphData.nodes;
+    const links = graphData.links;
+  
+    // Finde Parent der gelöschten Node
+    const parentLink = links.find(link => link.target === selectedNode);
+    const parentId = parentLink ? parentLink.source : null;
+  
+    // Finde alle Kinder der gelöschten Node
+    const childLinks = links.filter(link => link.source === selectedNode);
+    const childIds = childLinks.map(link => link.target);
+  
+    // Entferne die Node aus den Nodes
+    const updatedNodes = nodes.filter(node => node.id !== selectedNode);
+  
+    // Entferne alle Links, die mit der gelöschten Node verbunden sind
+    let updatedLinks = links.filter(link => link.source !== selectedNode && link.target !== selectedNode);
+  
+    // Falls es einen Parent gibt, verbinde die Kinder mit dem Parent
+    if (parentId) {
+      const newLinks = childIds.map(childId => ({
+        source: parentId,
+        target: childId
+      }));
+      updatedLinks = [...updatedLinks, ...newLinks];
+    }
+  
+    setGraphData({ nodes: updatedNodes, links: updatedLinks });
+  
+    // Node aus currentmap entfernen
+    const updatedMap = { ...currentmap };
+    function removeNodeRecursive(node) {
+      if (!node.children) return;
+      node.children = node.children.filter(child => child.id !== selectedNode);
+      node.children.forEach(removeNodeRecursive);
+    }
+    removeNodeRecursive(updatedMap);
+  
+    setCurrentMap(updatedMap);
+  
+    // Mindmap im Explorer aktualisieren
+    setMindmaps(prevMindmaps =>
+      prevMindmaps.map(map =>
+        map.id === selectedMindmap ? { ...map, data: updatedMap } : map
+      )
+    );
+  
+    // Daten ans Backend schicken
+    const token = localStorage.getItem("token");
+    updateMindmapData(selectedMindmap, updatedMap, token);
+  }
+  
+
   // useMemo: Verhindert unnötige Neuberechnung der Nodes/Links
   const graphDataMemo = useMemo(() => {
     if (!currentmap) return { nodes: [], links: [] };
@@ -135,7 +193,7 @@ const App = () => {
 
         {/* 🔹 GRAPH-BEREICH */}
         <div className="flex flex-1 h-screen bg-neutral-100 dark:bg-neutral-900 overflow-hidden relative">
-          <ToolBar addNode={addNode} />
+          <ToolBar addNode={addNode} deleteNode={deleteNode}/>
           {selectedMindmap && isLoggedIn && <ForceGraphTest nodes={graphData.nodes} links={graphData.links} />}
         </div>
       </div>

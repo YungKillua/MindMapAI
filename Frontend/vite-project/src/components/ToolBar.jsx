@@ -2,7 +2,7 @@ import { React, useContext} from "react";
 import { CirclePlus, Trash, Pencil, Palette } from 'lucide-react';
 import { MindmapContext } from "/src/components/Context";
 
-export default function TooolBar({addNode}) {
+export default function TooolBar({addNode, deleteNode}) {
   //Global States
   const {selectedNode, setSelectedNode} = useContext(MindmapContext);
 
@@ -10,6 +10,13 @@ export default function TooolBar({addNode}) {
     if (selectedNode) {
       console.log(selectedNode);
       addNode(selectedNode);
+    } else {
+      console.log('No Node selected');
+    }
+  }
+  function handleDeleteNode() {
+    if (selectedNode) {
+      deleteNode();
     } else {
       console.log('No Node selected');
     }
@@ -23,7 +30,10 @@ export default function TooolBar({addNode}) {
           >
             <CirclePlus className='text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'/>
           </button>
-          <button className='rounded transition-all hover:bg-neutral-200 dark:hover:bg-neutral-700 active:bg-neutral-300 dark:active:bg-neutral-600 hover:cursor-pointer'>
+          <button className='rounded transition-all hover:bg-neutral-200 dark:hover:bg-neutral-700 active:bg-neutral-300 dark:active:bg-neutral-600 hover:cursor-pointer'
+                  onClick={handleDeleteNode}
+                  disabled={!selectedNode}
+          >
             <Trash className='text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white'/>
           </button>
           <button className='rounded transition-all hover:bg-neutral-200 dark:hover:bg-neutral-700 active:bg-neutral-300 dark:active:bg-neutral-600 hover:cursor-pointer'>
